@@ -236,21 +236,21 @@ class Gui:
 			ds_idx = search('<ds>', self.file_to_verify.decode())
 			data = self.file_to_verify.decode()[:ds_idx.start()]
 			print(data)
-			data_hash = sha1(data.encode()).hexdigest()
+			data_hash = sha1(data.encode()).digest()
 
 		elif self.combobox_sign_options_verifying.current() == 1:
 			data = self.file_to_verify
-			data_hash = sha1(data).hexdigest()
+			data_hash = sha1(data).digest()
 
 		# decrypt ds
 		print(self.digi_sign_to_verified.get())
 		ds = BeautifulSoup(self.digi_sign_to_verified.get(), "html.parser").ds.text
 		ds_decrypted = self.rsa.decrypt(ds)
 
-		print(data_hash)
+		print(list(data_hash))
 		print(ds_decrypted)
 		# compare
-		if data_hash == ds_decrypted:
+		if list(data_hash) == ds_decrypted:
 			messagebox.showinfo("Verification is Successful", "Verified Document")
 		else:
 			messagebox.showerror("Verification Failed", "Unverified Document")
